@@ -1,0 +1,25 @@
+{
+  "name": "cypress_automation",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alyfahmad/cypress_automation.git"
+  },
+  "author": "alif",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alyfahmad/cypress_automation/issues"
+  },
+  "homepage": "https://github.com/alyfahmad/cypress_automation#readme",
+  "dependencies": {
+    "cypress": "^11.1.0"
+  },
+  "devDependencies": {
+    "@cypress/xpath": "^2.0.3"
+  }
+}
