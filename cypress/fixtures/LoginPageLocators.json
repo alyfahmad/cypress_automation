@@ -1,4 +1,25 @@
 {
-    "login_header": "login"
+    
+    "login_header": "//h5[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'login')]",
+    "orangehrm_login_branding": "//div[@class='orangehrm-login-branding']",
+    "orangehrm_login_logo": "//div[@class='orangehrm-login-logo']",
+    "orangehrm_os": "//p[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'orangehrm os')]",
+    "oragehrm_inc": "//p/a[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'orangehrm, inc')]",
+    "linkedin_ref": "//a[contains(@href,'linkedin')]",
+    "facebook_ref": "//a[contains(@href,'facebook')]",
+    "twitter_ref": "//a[contains(@href,'twitter')]",
+    "youtube_ref": "//a[contains(@href,'youtube')]",
+    "username_required": "//input[@placeholder='Username']//parent::div//parent::div/span[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'required')]",
+    "password_required": "//input[@placeholder='Password']//parent::div//parent::div/span[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'required')]",
+    "invalid_credentials": "//p[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'invalid credentials')]",
+    "dashboard_header": "//h6[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'dashboard')]",
+    "profile_picture": "//img[contains(@alt, 'profile picture')]",
+    "logout_option": "//a[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'logout')]",
+
+
+
+
+    "login_button": "Login"
+
 }
   
