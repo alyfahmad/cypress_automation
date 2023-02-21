@@ -1,19 +1,25 @@
 describe('Verify Time Page Functionality', () => {
+    let userdata;
+    before( ()=> {
+        cy.fixture('TimePage').then( (data)=> {
+          userdata = data;
+        })
+    })
     it('verify login with employee account', () => {
-        cy.visit(
-            "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login"
-          );
-        cy.xpath("//input[@placeholder='Username']").type("tester");
+        cy.visit(userdata.site);
+        cy.title().should('eq',userdata.title);
+        cy.xpath("//input[@placeholder='Username']").type(userdata.employee_username);
         cy.xpath("//input[@placeholder='Username']").should(
-            "have.value",
-            "tester"
+          "have.value",
+          userdata.employee_username
         );
-        cy.xpath("//input[@placeholder='Password']").type("S@mple_password963");
+        cy.xpath("//input[@placeholder='Password']").type(userdata.employee_password);
         cy.xpath("//input[@placeholder='Password']").should(
-            "have.value",
-            "S@mple_password963"
+          "have.value",
+          userdata.employee_password
         );
         cy.xpath("//button[contains(normalize-space(.),'Login')]").click();
+        cy.title().should('eq',userdata.title);
     })
     it('Validate navigation to Time Page', () => {
         cy.xpath(
@@ -34,8 +40,8 @@ describe('Verify Time Page Functionality', () => {
             "//span[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'attendance')]/../ul//a[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'punch in')]"
         ).click();
         cy.xpath("//input[@placeholder='hh:mm']").clear();
-        cy.xpath("//input[@placeholder='hh:mm']").type("08:00 AM");
-        cy.xpath("//label[contains(normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')),'note')]/../..//textarea").type("Test Punch In");
+        cy.xpath("//input[@placeholder='hh:mm']").type(userdata.punch_in_time);
+        cy.xpath("//label[contains(normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')),'note')]/../..//textarea").type(userdata.punch_in_description);
         cy.wait(3000);
         cy.xpath(
             "//button[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='in']"
@@ -46,8 +52,8 @@ describe('Verify Time Page Functionality', () => {
         cy.xpath("//label[contains(normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')),'punched in time')]/../..//p").should("be.visible");
         cy.xpath("//label[contains(normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')),'punched in note')]/../..//p").should("be.visible");
         cy.xpath("//input[@placeholder='hh:mm']").clear();
-        cy.xpath("//input[@placeholder='hh:mm']").type("05:00 PM");
-        cy.xpath("//label[contains(normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')),'note')]/../..//textarea").type("Test Punch Out");
+        cy.xpath("//input[@placeholder='hh:mm']").type(userdata.punch_out_time);
+        cy.xpath("//label[contains(normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')),'note')]/../..//textarea").type(userdata.punch_out_description);
         cy.wait(3000);
         cy.xpath(
             "//button[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='out']"
@@ -94,12 +100,12 @@ describe('Verify Time Page Functionality', () => {
         cy.xpath(
             "//span[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'job analysis')]"
         ).click();
-        cy.xpath("(//input[@class='oxd-input oxd-input--active'])[2]").type("08:00");
-        cy.xpath("(//input[@class='oxd-input oxd-input--active'])[3]").type("08:00");
-        cy.xpath("(//input[@class='oxd-input oxd-input--active'])[4]").type("08:00");
-        cy.xpath("(//input[@class='oxd-input oxd-input--active'])[5]").type("08:00");
-        cy.xpath("(//input[@class='oxd-input oxd-input--active'])[6]").type("08:00");
-        cy.xpath("(//input[@class='oxd-input oxd-input--active'])[7]").type("08:00");
+        cy.xpath("(//input[@class='oxd-input oxd-input--active'])[2]").type(userdata.timesheet_common_duration);
+        cy.xpath("(//input[@class='oxd-input oxd-input--active'])[3]").type(userdata.timesheet_common_duration);
+        cy.xpath("(//input[@class='oxd-input oxd-input--active'])[4]").type(userdata.timesheet_common_duration);
+        cy.xpath("(//input[@class='oxd-input oxd-input--active'])[5]").type(userdata.timesheet_common_duration);
+        cy.xpath("(//input[@class='oxd-input oxd-input--active'])[6]").type(userdata.timesheet_common_duration);
+        cy.xpath("(//input[@class='oxd-input oxd-input--active'])[7]").type(userdata.timesheet_common_duration);
         // cy.xpath("(//input[@class='oxd-input oxd-input--active'])[8]").type("08:00");
         cy.wait(2000);
         cy.xpath(
