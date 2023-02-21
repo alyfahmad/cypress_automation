@@ -1,17 +1,17 @@
-describe('verify create new employee and login info', () => {
+describe("verify create new employee and login info", () => {
   let userdata;
   let employeedata;
-  before( ()=> {
-      cy.fixture('PIMPage').then( (data)=> {
-        userdata = data;
-      })
-      cy.fixture('EmployeeInfo').then( (data)=> {
-        employeedata = data;
-    })
-  })
-  it('verify login to admin account', () => {
+  before(() => {
+    cy.fixture("PIMPage").then((data) => {
+      userdata = data;
+    });
+    cy.fixture("EmployeeInfo").then((data) => {
+      employeedata = data;
+    });
+  });
+  it("verify login to admin account", () => {
     cy.visit(userdata.site);
-    cy.title().should('eq',userdata.title);
+    cy.title().should("eq", userdata.title);
     cy.xpath("//input[@placeholder='Username']").type(userdata.admin_username);
     cy.xpath("//input[@placeholder='Username']").should(
       "have.value",
@@ -23,8 +23,8 @@ describe('verify create new employee and login info', () => {
       userdata.admin_password
     );
     cy.xpath("//button[contains(normalize-space(.),'Login')]").click();
-    cy.title().should('eq',userdata.title);
-  })
+    cy.title().should("eq", userdata.title);
+  });
   it("Navigate to PIM", () => {
     cy.xpath(
       "//h6[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'dashboard')]"
@@ -35,7 +35,7 @@ describe('verify create new employee and login info', () => {
     cy.xpath(
       "//h6[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'pim')]"
     ).should("be.visible");
-  })
+  });
   it("Validate new employee creation page content", () => {
     cy.xpath(
       "//button[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'add')]"
@@ -66,16 +66,25 @@ describe('verify create new employee and login info', () => {
     cy.xpath(
       "//label[normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='confirm password']/parent::div/parent::div//span[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='required']"
     ).should("be.visible");
-  })
+  });
 
-    // Add employee information
-    it("Validate & Add new employee basic information and credentials", () => {
-    cy.xpath("//input[@placeholder='First Name']").type(employeedata.employee_first_name);
-    cy.xpath("//input[@placeholder='Middle Name']").type(employeedata.employee_middle_name);
-    cy.xpath("//input[@placeholder='Last Name']").type(employeedata.employee_last_name);
-    cy.xpath("//input[@type='file']").selectFile(employeedata.employee_profile_pic_path, {
-      force: true,
-    });
+  // Add employee information
+  it("Validate & Add new employee basic information and credentials", () => {
+    cy.xpath("//input[@placeholder='First Name']").type(
+      employeedata.employee_first_name
+    );
+    cy.xpath("//input[@placeholder='Middle Name']").type(
+      employeedata.employee_middle_name
+    );
+    cy.xpath("//input[@placeholder='Last Name']").type(
+      employeedata.employee_last_name
+    );
+    cy.xpath("//input[@type='file']").selectFile(
+      employeedata.employee_profile_pic_path,
+      {
+        force: true,
+      }
+    );
     cy.xpath(
       "//label[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'username')]/parent::div/parent::div//input"
     ).type(employeedata.employee_username);
@@ -144,8 +153,8 @@ describe('verify create new employee and login info', () => {
       "have.value",
       employeedata.employee_last_name
     );
-    })
-    it("Validate & Add Pesonal Details", () => {
+  });
+  it("Validate & Add Pesonal Details", () => {
     //Add additional information
     cy.xpath(
       "//h6[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='personal details']",
@@ -199,8 +208,8 @@ describe('verify create new employee and login info', () => {
     cy.xpath(
       "(//button[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='save'])[1]"
     ).click();
-    })
-    it("Add SSN & SIN", () => {
+  });
+  it("Add SSN & SIN", () => {
     // add ssn & sin
     cy.wait(5000);
     cy.xpath(
@@ -212,9 +221,9 @@ describe('verify create new employee and login info', () => {
     cy.xpath(
       "(//button[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='save'])[1]"
     ).click();
-    })
-    // add blood type
-    it("Add Blood Type", () => {
+  });
+  // add blood type
+  it("Add Blood Type", () => {
     cy.wait(5000);
     cy.xpath(
       "//label[contains(normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')),'blood type')]/parent::div/parent::div//i"
@@ -225,17 +234,20 @@ describe('verify create new employee and login info', () => {
     cy.xpath(
       "(//button[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='save'])[2]"
     ).click();
-    })
-    // add attachment
-    it("Add Attachment", () => {
+  });
+  // add attachment
+  it("Add Attachment", () => {
     cy.wait(5000);
     cy.xpath(
       "//button[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='add']"
     ).click();
     cy.wait(2000);
-    cy.xpath("//input[@type='file']").selectFile(employeedata.employee_attachment_path, {
-      force: true,
-    });
+    cy.xpath("//input[@type='file']").selectFile(
+      employeedata.employee_attachment_path,
+      {
+        force: true,
+      }
+    );
     cy.xpath(
       "//label[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='comment']/../..//textarea"
     ).type(employeedata.employee_attachment_description);
@@ -243,10 +255,14 @@ describe('verify create new employee and login info', () => {
       "(//button[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='save'])[3]"
     ).click();
     cy.wait(5000);
-  })
-  it('Validate logout', () => {
-    cy.xpath("//div[@class='oxd-topbar-header-userarea']//img[contains(@alt, 'profile picture')]").click();
-    cy.xpath("//a[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'logout')]").click();
-    cy.xpath("//div[@class='orangehrm-login-branding']").should('be.visible');
-  })
-})
+  });
+  it("Validate logout", () => {
+    cy.xpath(
+      "//div[@class='oxd-topbar-header-userarea']//img[contains(@alt, 'profile picture')]"
+    ).click();
+    cy.xpath(
+      "//a[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'logout')]"
+    ).click();
+    cy.xpath("//div[@class='orangehrm-login-branding']").should("be.visible");
+  });
+});
