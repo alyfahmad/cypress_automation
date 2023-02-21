@@ -1,4 +1,4 @@
-1. Download nodeJS from https://nodejs.org/en/download/
+1. Download and Install nodeJS from https://nodejs.org/en/download/
 2. Go to This PC → Properties → Advanced System Settings → Environment Variables → System Variables → Path
 3. Click edit and check if nodeJS is available for the path variable
 4. Open command prompt and run the following commmands and they should return a version number
@@ -21,5 +21,16 @@
     after installation add
     "require('@cypress/xpath');
     /// <reference types="cypress-xpath" />" to the command.js file in support
+
+
+Some issues i faced during the development and how i resolved it:
+1. I was facing an issue with xpath where the dropdown element would change state and close out when i clicked on it's Xpath. As a result i was not able to find
+the details under that element.
+Solution: I used breakpoint on attribute from the chrome dev tool and changed the parent div state to show the dropdown content. I went ahead with breakpoint steps until the dropdown was visible and then expanded the contents to see element details.
+
+2. I was facing an issue in cypress where my "it" test cases were acting independently. So, i had to perform the initial steps over and over again. 
+Solution: I found that this was caused by a configuration in cypress.config.js file called testIsolation. When it is set to true the behavior is like that. document: https://docs.cypress.io/guides/core-concepts/test-isolation
+at the end i went with a solution to add suite specific isolation configuration as one of my suites supported isolation while others didn't.
+
 
 -- Selectorshub is a great chrome extension which can be used to identify xpath

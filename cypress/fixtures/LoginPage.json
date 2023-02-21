@@ -1,0 +1,9 @@
+{
+    "site": "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login",
+    "admin_username": "Admin",
+    "admin_password": "admin123",
+    "incorrect_username": "tester",
+    "incorrect_password": "test_password",
+    "title": "OrangeHRM"
+  }
+  

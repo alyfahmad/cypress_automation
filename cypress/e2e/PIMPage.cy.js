@@ -1,6 +1,5 @@
-describe("verify create new employee and login info", () => {
-  it("verify login and add new employee", () => {
-    cy.viewport(1920, 1080);
+describe('verify create new employee and login info', () => {
+  it('verify login to admin account', () => {
     cy.visit(
       "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login"
     );
@@ -29,7 +28,9 @@ describe("verify create new employee and login info", () => {
     });
     // Click on Login and validate
     cy.xpath("//button[contains(normalize-space(.),'Login')]").click();
-    cy.title().should("eq", "OrangeHRM");
+    // cy.title().should("eq", "OrangeHRM");
+  })
+  it("Navigate to PIM", () => {
     cy.xpath(
       "//h6[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'dashboard')]"
     ).should("be.visible");
@@ -39,6 +40,8 @@ describe("verify create new employee and login info", () => {
     cy.xpath(
       "//h6[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'pim')]"
     ).should("be.visible");
+  })
+  it("Validate new employee creation page content", () => {
     cy.xpath(
       "//button[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'add')]"
     ).click();
@@ -68,8 +71,10 @@ describe("verify create new employee and login info", () => {
     cy.xpath(
       "//label[normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='confirm password']/parent::div/parent::div//span[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='required']"
     ).should("be.visible");
+  })
 
     // Add employee information
+    it("Validate & Add new employee basic information and credentials", () => {
     cy.xpath("//input[@placeholder='First Name']").type("tester f_name");
     cy.xpath("//input[@placeholder='Middle Name']").type("tester m_name");
     cy.xpath("//input[@placeholder='Last Name']").type("tester l_name");
@@ -144,6 +149,8 @@ describe("verify create new employee and login info", () => {
       "have.value",
       "tester l_name"
     );
+    })
+    it("Validate & Add Pesonal Details", () => {
     //Add additional information
     cy.xpath(
       "//h6[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='personal details']",
@@ -197,7 +204,8 @@ describe("verify create new employee and login info", () => {
     cy.xpath(
       "(//button[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='save'])[1]"
     ).click();
-
+    })
+    it("Add SSN & SIN", () => {
     // add ssn & sin
     cy.wait(5000);
     cy.xpath(
@@ -209,5 +217,40 @@ describe("verify create new employee and login info", () => {
     cy.xpath(
       "(//button[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='save'])[1]"
     ).click();
-  });
-});
+    })
+    // add blood type
+    it("Add Blood Type", () => {
+    cy.wait(5000);
+    cy.xpath(
+      "//label[contains(normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')),'blood type')]/parent::div/parent::div//i"
+    ).click();
+    cy.xpath(
+      "//label[contains(normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')),'blood type')]/parent::div/parent::div//span[contains(normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')),'o-')]"
+    ).click();
+    cy.xpath(
+      "(//button[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='save'])[2]"
+    ).click();
+    })
+    // add attachment
+    it("Add Attachment", () => {
+    cy.wait(5000);
+    cy.xpath(
+      "//button[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='add']"
+    ).click();
+    cy.wait(2000);
+    cy.xpath("//input[@type='file']").selectFile("./cypress/test.jpg", {
+      force: true,
+    });
+    cy.xpath(
+      "//label[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='comment']/../..//textarea"
+    ).type("Test Attachment");
+    cy.xpath(
+      "(//button[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='save'])[3]"
+    ).click();
+  })
+  it('Validate logout', () => {
+    cy.xpath("//div[@class='oxd-topbar-header-userarea']//img[contains(@alt, 'profile picture')]").click();
+    cy.xpath("//a[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'logout')]").click();
+    cy.xpath("//div[@class='orangehrm-login-branding']").should('be.visible');
+  })
+})

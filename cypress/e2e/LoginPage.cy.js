@@ -1,8 +1,18 @@
-describe('Verify login page', () => {
+describe('Verify login page', {testIsolation: true},() => {
+    let userdata;
+    let locatordata;
+    before( ()=> {
+        cy.fixture('LoginPage').then( (data)=> {
+            userdata = data;
+        })
+        cy.fixture('LoginPageLocators').then( (data)=> {
+            locatordata = data;
+        })
+    })
     it('Validate login page content', () => {
         // Navigate to the specified url and validate page title
-        cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
-        cy.title().should('eq','OrangeHRM');
+        cy.visit(userdata.site);
+        cy.title().should('eq',userdata.title);
         cy.xpath("//div[@class='orangehrm-login-branding']").should('be.visible');
         cy.xpath("//h5[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'login')]").should('be.visible');
         cy.xpath("//div[@class='orangehrm-login-logo']").should('be.visible');
@@ -17,8 +27,8 @@ describe('Verify login page', () => {
 
     it('Validate user cannot login without credentials', () => {
         // Navigate to the specified url and validate page title
-        cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
-        cy.title().should('eq','OrangeHRM');
+        cy.visit(userdata.site);
+        cy.title().should('eq',userdata.title);
         cy.xpath("//button[contains(normalize-space(.),'Login')]").click();
         cy.xpath("//input[@placeholder='Username']//parent::div//parent::div/span[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'required')]").should('be.visible');
         cy.xpath("//input[@placeholder='Password']//parent::div//parent::div/span[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'required')]").should('be.visible');
@@ -26,23 +36,23 @@ describe('Verify login page', () => {
     
     it('Validate user cannot login with wrong credentials', () => {
         // Navigate to the specified url and validate page title
-        cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
-        cy.title().should('eq','OrangeHRM');
-        cy.xpath("//input[@placeholder='Username']").type('tester');
+        cy.visit(userdata.site);
+        cy.title().should('eq',userdata.title);
+        cy.xpath("//input[@placeholder='Username']").type(userdata.incorrect_username);
         cy.xpath("//button[contains(normalize-space(.),'Login')]").click();
         cy.xpath("//input[@placeholder='Password']//parent::div//parent::div/span[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'required')]").should('be.visible');
         cy.xpath("//input[@placeholder='Username']").clear();
         cy.xpath("//input[@placeholder='Username']//parent::div//parent::div/span[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'required')]").should('be.visible');
-        cy.xpath("//input[@placeholder='Password']").type('test_password');
-        cy.xpath("//input[@placeholder='Username']").type('tester');
+        cy.xpath("//input[@placeholder='Password']").type(userdata.incorrect_password);
+        cy.xpath("//input[@placeholder='Username']").type(userdata.incorrect_username);
         cy.xpath("//button[contains(normalize-space(.),'Login')]").click();
         cy.xpath("//p[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'invalid credentials')]").should('be.visible')
     })
 
-    it('Validate login with valid credentials', () => {
+    it('Fetch credentials from login page, validate login with valid credentials and logout', () => {
         // Navigate to the specified url and validate page title
-        cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
-        cy.title().should('eq','OrangeHRM');
+        cy.visit(userdata.site);
+        cy.title().should('eq',userdata.title);
         // Read Username from the login page and insert it in the input field
         cy.xpath("//p[contains(normalize-space(.), 'Username')]").then(($txt) => {
             let username = $txt.text();
@@ -63,7 +73,11 @@ describe('Verify login page', () => {
         })
         // Click on Login and validate
         cy.xpath("//button[contains(normalize-space(.),'Login')]").click();
-        cy.title().should('eq','OrangeHRM');
+        cy.title().should('eq',userdata.title);
         cy.xpath("//h6[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'dashboard')]").should('be.visible')
+        cy.xpath("//img[contains(@alt, 'profile picture')]").click();
+        cy.wait(2000);
+        cy.xpath("//a[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'logout')]").click();
+        cy.wait(2000);
     })
 })
