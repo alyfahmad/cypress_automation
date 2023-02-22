@@ -2,6 +2,27 @@
     "site": "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login",
     "admin_username": "Admin",
     "admin_password": "admin123",
-    "title": "OrangeHRM"
+    "title": "OrangeHRM",
+
+
+    "login_button": "login",
+    "add_button": "add",
+    "save_button": "save",
+
+    "first_name_placeholder": "First Name",
+    "middle_name_placeholder": "Middle Name",
+    "last_name_placeholder": "Last Name",
+
+    "username_field_name": "username",
+    "password_field_name": "password",
+    "confirmed_password_field_name": "confirm password",
+    "nickname_field_name": "nickname",
+    "employee_id_field_name": "employee id",
+    "license_number_field_name": "license number",
+    "license_expiry_date_field_name": "license expiry date",
+    "date_of_birth_field_name": "date of birth",
+    "military_sevice_field_name": "military service",
+    "ssn_field_name": "ssn number",
+    "sin_field_name": "sin number"
   }
   

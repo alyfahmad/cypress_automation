@@ -1,6 +1,16 @@
+import Login from "../PageObjects/LoginPage";
+import Common from "../PageObjects/Common";
+import PIM from "../PageObjects/PIMPage";
+
 describe("verify create new employee and login info", () => {
+
   let userdata;
   let employeedata;
+  let locatordata;
+  let login;
+  let common;
+  let pim;
+
   before(() => {
     cy.fixture("PIMPage").then((data) => {
       userdata = data;
@@ -8,261 +18,131 @@ describe("verify create new employee and login info", () => {
     cy.fixture("EmployeeInfo").then((data) => {
       employeedata = data;
     });
+    cy.fixture("PIMPageLocators").then((data) => {
+      locatordata = data;
+    });
+    login = new Login();
+    common = new Common();
+    pim = new PIM();
   });
+
+
   it("verify login to admin account", () => {
-    cy.visit(userdata.site);
-    cy.title().should("eq", userdata.title);
-    cy.xpath("//input[@placeholder='Username']").type(userdata.admin_username);
-    cy.xpath("//input[@placeholder='Username']").should(
-      "have.value",
-      userdata.admin_username
-    );
-    cy.xpath("//input[@placeholder='Password']").type(userdata.admin_password);
-    cy.xpath("//input[@placeholder='Password']").should(
-      "have.value",
-      userdata.admin_password
-    );
-    cy.xpath("//button[contains(normalize-space(.),'Login')]").click();
-    cy.title().should("eq", userdata.title);
+    login.navigateToURLandVeifyTitle(userdata.site, userdata.title);
+    login.setUserName(userdata.admin_username);
+    login.validateUserName(userdata.admin_username);
+    login.setPassword(userdata.admin_password);
+    login.validatePassword(userdata.admin_password);
+    common.clickButton(userdata.login_button);
   });
+
   it("Navigate to PIM", () => {
-    cy.xpath(
-      "//h6[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'dashboard')]"
-    ).should("be.visible");
-    cy.xpath(
-      "//a/span[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'pim')]"
-    ).click();
-    cy.xpath(
-      "//h6[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'pim')]"
-    ).should("be.visible");
+    common.checkIfVisible(locatordata.dashboard_header);
+    common.clickOnElement(locatordata.pim_option_in_sidebar);
+    common.checkIfVisible(locatordata.pim_header)
+    common.waitUntilPageLoad(2);
   });
-  it("Validate new employee creation page content", () => {
-    cy.xpath(
-      "//button[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'add')]"
-    ).click();
-    cy.xpath(
-      "//h6[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'add employee')]"
-    ).should("be.visible");
-    // Check validations
-    cy.xpath(
-      "//button[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'save')]"
-    ).click();
-    cy.xpath(
-      "//input[@placeholder='First Name']/parent::div/parent::div/span[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='required']"
-    ).should("be.visible");
-    cy.xpath(
-      "//input[@placeholder='Last Name']/parent::div/parent::div/span[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='required']"
-    ).should("be.visible");
-    cy.xpath("//input[@type='checkbox']").check({ force: true });
-    cy.xpath(
-      "//button[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'save')]"
-    ).click();
-    cy.xpath(
-      "//label[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'username')]/parent::div/parent::div/span[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='required']"
-    ).should("be.visible");
-    cy.xpath(
-      "//label[normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='password']/parent::div/parent::div//span[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='required']"
-    ).should("be.visible");
-    cy.xpath(
-      "//label[normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='confirm password']/parent::div/parent::div//span[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='required']"
-    ).should("be.visible");
+
+  it("Validate new employee creation page content and conditions", () => {
+    common.clickButton(userdata.add_button);
+    common.checkIfVisible(locatordata.add_employee_header);
+    common.clickButton(userdata.save_button);
+    common.checkIfVisible(locatordata.first_name_required);
+    common.checkIfVisible(locatordata.last_name_required);
+    pim.checkboxAction();
+    common.clickButton(userdata.save_button);
+    common.checkIfVisible(locatordata.username_required);
+    common.checkIfVisible(locatordata.password_required);
+    common.checkIfVisible(locatordata.confirm_password_rerquired);
   });
 
   // Add employee information
   it("Validate & Add new employee basic information and credentials", () => {
-    cy.xpath("//input[@placeholder='First Name']").type(
-      employeedata.employee_first_name
-    );
-    cy.xpath("//input[@placeholder='Middle Name']").type(
-      employeedata.employee_middle_name
-    );
-    cy.xpath("//input[@placeholder='Last Name']").type(
-      employeedata.employee_last_name
-    );
-    cy.xpath("//input[@type='file']").selectFile(
-      employeedata.employee_profile_pic_path,
-      {
-        force: true,
-      }
-    );
-    cy.xpath(
-      "//label[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'username')]/parent::div/parent::div//input"
-    ).type(employeedata.employee_username);
-    // password validation check
-    cy.xpath(
-      "//label[normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='password']/parent::div/parent::div//input"
-    ).type(employeedata.employee_incorrect_password_1);
-    cy.xpath(
-      "//label[normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='confirm password']/parent::div/parent::div//input"
-    ).type(employeedata.employee_incorrect_password_1);
-    cy.xpath(
-      "//button[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'save')]"
-    ).click();
-    cy.xpath(
-      "//label[normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='password']/parent::div/parent::div/span[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'should have at least 8 characters')]"
-    );
-    cy.xpath(
-      "//label[normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='password']/parent::div/parent::div//input"
-    ).clear();
-    cy.xpath(
-      "//label[normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='confirm password']/parent::div/parent::div//input"
-    ).clear();
-    cy.xpath(
-      "//label[normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='password']/parent::div/parent::div//input"
-    ).type(employeedata.employee_incorrect_password_2);
-    cy.xpath(
-      "//label[normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='confirm password']/parent::div/parent::div//input"
-    ).type(employeedata.employee_incorrect_password_2);
-    cy.xpath(
-      "//label[normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='password']/parent::div/parent::div//span[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')),'your password must contain a lower-case letter, an upper-case letter, a digit and a special character.')]"
-    );
-    cy.xpath(
-      "//label[normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='password']/parent::div/parent::div//input"
-    ).clear();
-    cy.xpath(
-      "//label[normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='confirm password']/parent::div/parent::div//input"
-    ).clear();
-    cy.xpath(
-      "//label[normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='password']/parent::div/parent::div//input"
-    ).type(employeedata.employee_password);
-    cy.xpath(
-      "//label[normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='confirm password']/parent::div/parent::div//input"
-    ).type(employeedata.employee_incorrect_password_3);
-    cy.xpath(
-      "//label[normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='confirm password']/parent::div/parent::div//span[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')),'passwords do not match')]"
-    );
-    cy.xpath(
-      "//label[normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='confirm password']/parent::div/parent::div//input"
-    ).clear();
-    cy.xpath(
-      "//label[normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='confirm password']/parent::div/parent::div//input"
-    ).type(employeedata.employee_password);
-    cy.xpath(
-      "//button[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'save')]"
-    ).click();
-    // Validate previously inserted information
-    cy.xpath("//input[@placeholder='First Name']").should(
-      "have.value",
-      employeedata.employee_first_name
-    );
-    cy.xpath("//input[@placeholder='Middle Name']").should(
-      "have.value",
-      employeedata.employee_middle_name
-    );
-    cy.xpath("//input[@placeholder='Last Name']").should(
-      "have.value",
-      employeedata.employee_last_name
-    );
+    common.inputTextBasedOnPlaceholder(userdata.first_name_placeholder, employeedata.employee_first_name);
+    common.inputTextBasedOnPlaceholder(userdata.middle_name_placeholder, employeedata.employee_middle_name);
+    common.inputTextBasedOnPlaceholder(userdata.last_name_placeholder, employeedata.employee_last_name);
+    pim.fileSelector(employeedata.employee_profile_pic_path);
+    pim.inputFieldBasedOnLabel(userdata.username_field_name, employeedata.employee_username);
+    pim.inputFieldBasedOnLabel(userdata.password_field_name, employeedata.employee_incorrect_password_1);
+    pim.inputFieldBasedOnLabel(userdata.confirmed_password_field_name, employeedata.employee_incorrect_password_1);
+    common.clickButton(userdata.save_button);
+    common.checkIfVisible(locatordata.password_minimum_character_validation);
+    pim.clearFieldBasedOnLabel(userdata.password_field_name);
+    pim.clearFieldBasedOnLabel(userdata.confirmed_password_field_name);
+    pim.inputFieldBasedOnLabel(userdata.password_field_name, employeedata.employee_incorrect_password_2);
+    pim.inputFieldBasedOnLabel(userdata.confirmed_password_field_name, employeedata.employee_incorrect_password_2);
+    common.checkIfVisible(locatordata.password_combination_validation);
+    pim.clearFieldBasedOnLabel(userdata.password_field_name);
+    pim.clearFieldBasedOnLabel(userdata.confirmed_password_field_name);
+    pim.inputFieldBasedOnLabel(userdata.password_field_name, employeedata.employee_password);
+    pim.inputFieldBasedOnLabel(userdata.confirmed_password_field_name, employeedata.employee_incorrect_password_3);
+    common.checkIfVisible(locatordata.password_mismatch_validation);
+    pim.clearFieldBasedOnLabel(userdata.confirmed_password_field_name);
+    pim.inputFieldBasedOnLabel(userdata.confirmed_password_field_name, employeedata.employee_password);
+    common.clickButton(userdata.save_button);
+    common.validateTextBasedOnPlaceholder(userdata.first_name_placeholder,employeedata.employee_first_name);
+    common.validateTextBasedOnPlaceholder(userdata.middle_name_placeholder,employeedata.employee_middle_name);
+    common.validateTextBasedOnPlaceholder(userdata.last_name_placeholder,employeedata.employee_last_name);
   });
+
+  //Add additional information
   it("Validate & Add Pesonal Details", () => {
-    //Add additional information
-    cy.xpath(
-      "//h6[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='personal details']",
-      { timeout: 10000 }
-    ).should("be.visible");
-    cy.xpath(
-      "//label[normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='nickname']/parent::div/parent::div//input"
-    ).type(employeedata.employee_nick_name);
-    cy.xpath(
-      "//label[normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='employee id']/parent::div/parent::div//input"
-    ).clear();
-    cy.xpath(
-      "//label[normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='employee id']/parent::div/parent::div//input"
-    ).type(employeedata.employee_id);
-    cy.xpath(
-      "//label[contains(normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')),'license number')]/parent::div/parent::div//input"
-    ).type(employeedata.employee_common_number);
-    cy.xpath(
-      "//label[contains(normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')),'license expiry date')]/parent::div/parent::div//input"
-    ).type(employeedata.employee_common_expiry_date);
-    cy.xpath(
-      "//label[contains(normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')),'license expiry date')]/parent::div/parent::div//input"
-    ).click();
-    cy.xpath(
-      "//label[contains(normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')),'nationality')]/parent::div/parent::div//i"
-    ).click();
-    cy.xpath(
-      "//label[contains(normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')),'nationality')]/parent::div/parent::div//span[contains(normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')),'bangladeshi')]"
-    ).click();
-    cy.xpath(
-      "//label[contains(normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')),'marital status')]/parent::div/parent::div//i"
-    ).click();
-    cy.xpath(
-      "//label[contains(normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')),'marital status')]/parent::div/parent::div//span[contains(normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')),'single')]"
-    ).click();
-    cy.xpath(
-      "//label[contains(normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')),'date of birth')]/parent::div/parent::div//input"
-    ).type(employeedata.employee_birth_date);
-    cy.xpath(
-      "//label[contains(normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')),'date of birth')]/parent::div/parent::div//input"
-    ).click();
-    cy.xpath(
-      "//label[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='male']/span"
-    ).click();
-    cy.xpath(
-      "//label[contains(normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')),'military service')]/parent::div/parent::div//input"
-    ).type(employeedata.employee_na_text);
-    cy.xpath(
-      "//label[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='smoker']/parent::div/parent::div//i"
-    ).click();
-    cy.xpath(
-      "(//button[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='save'])[1]"
-    ).click();
+    common.checkIfVisible(locatordata.personal_information_header);
+    // cy.xpath(
+    //   "//h6[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='personal details']",
+    //   { timeout: 10000 }
+    // ).should("be.visible");
+    pim.inputFieldBasedOnLabel(userdata.nickname_field_name, employeedata.employee_nick_name);
+    pim.clearFieldBasedOnLabel(userdata.employee_id_field_name);
+    pim.inputFieldBasedOnLabel(userdata.employee_id_field_name, employeedata.employee_id);
+    pim.inputFieldBasedOnLabel(userdata.license_number_field_name, employeedata.employee_common_number);
+    pim.inputFieldBasedOnLabel(userdata.license_expiry_date_field_name, employeedata.employee_common_expiry_date);
+    common.clickOnElement(locatordata.expiry_date_element);
+    common.clickOnElement(locatordata.nationality_selection_element);
+    common.clickOnElement(locatordata.nationality_option_element);
+    common.clickOnElement(locatordata.marital_status_selection_element);
+    common.clickOnElement(locatordata.marital_status_option_element);
+    pim.inputFieldBasedOnLabel(userdata.date_of_birth_field_name, employeedata.employee_birth_date);
+    common.clickOnElement(locatordata.birth_date_element);
+    common.clickOnElement(locatordata.gender_option_element);
+    pim.inputFieldBasedOnLabel(userdata.military_sevice_field_name, employeedata.employee_na_text);
+    common.clickOnElement(locatordata.smoker_option_element);
+    common.clickOnElement(locatordata.save_button_1);
   });
+
+  // add ssn & sin
   it("Add SSN & SIN", () => {
-    // add ssn & sin
-    cy.wait(5000);
-    cy.xpath(
-      "//label[contains(normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')),'ssn number')]/parent::div/parent::div//input"
-    ).type(employeedata.employee_common_number);
-    cy.xpath(
-      "//label[contains(normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')),'sin number')]/parent::div/parent::div//input"
-    ).type(employeedata.employee_common_number);
-    cy.xpath(
-      "(//button[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='save'])[1]"
-    ).click();
+    common.waitUntilPageLoad(5);
+    pim.inputFieldBasedOnLabel(userdata.ssn_field_name, employeedata.employee_common_number);
+    pim.inputFieldBasedOnLabel(userdata.sin_field_name, employeedata.employee_common_number);
+    common.clickOnElement(locatordata.save_button_1);
   });
+
+
   // add blood type
   it("Add Blood Type", () => {
-    cy.wait(5000);
-    cy.xpath(
-      "//label[contains(normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')),'blood type')]/parent::div/parent::div//i"
-    ).click();
-    cy.xpath(
-      "//label[contains(normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')),'blood type')]/parent::div/parent::div//span[contains(normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')),'o-')]"
-    ).click();
-    cy.xpath(
-      "(//button[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='save'])[2]"
-    ).click();
+    common.waitUntilPageLoad(5);
+    common.clickOnElement(locatordata.blood_type_selection_element);
+    common.clickOnElement(locatordata.blood_type_option_element)
+    common.clickOnElement(locatordata.save_button_2);
   });
+
+
   // add attachment
   it("Add Attachment", () => {
-    cy.wait(5000);
-    cy.xpath(
-      "//button[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='add']"
-    ).click();
-    cy.wait(2000);
-    cy.xpath("//input[@type='file']").selectFile(
-      employeedata.employee_attachment_path,
-      {
-        force: true,
-      }
-    );
-    cy.xpath(
-      "//label[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='comment']/../..//textarea"
-    ).type(employeedata.employee_attachment_description);
-    cy.xpath(
-      "(//button[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='save'])[3]"
-    ).click();
-    cy.wait(5000);
+    common.waitUntilPageLoad(5);
+    common.clickButton(userdata.add_button);
+    common.waitUntilPageLoad(2);
+    pim.fileSelector(employeedata.employee_attachment_path);
+    pim.inputFieldBasedOnLocator(locatordata.attachment_description_element, employeedata.employee_attachment_description);
+    common.clickOnElement(locatordata.save_button_3);
+    common.waitUntilPageLoad(5);
   });
+
+
   it("Validate logout", () => {
-    cy.xpath(
-      "//div[@class='oxd-topbar-header-userarea']//img[contains(@alt, 'profile picture')]"
-    ).click();
-    cy.xpath(
-      "//a[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'logout')]"
-    ).click();
-    cy.xpath("//div[@class='orangehrm-login-branding']").should("be.visible");
+    common.clickOnElement(locatordata.profile_picture);
+    common.clickOnElement(locatordata.logout_option);
   });
+  
 });
