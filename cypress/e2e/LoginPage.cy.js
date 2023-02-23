@@ -36,7 +36,7 @@ describe("Verify login page", { testIsolation: true }, () => {
   it("Validate user cannot login without credentials", () => {
     // Navigate to the specified url and validate page title
     login.navigateToURLandVeifyTitle(userdata.site, userdata.title);
-    common.clickButton(locatordata.login_button);
+    common.clickButton(userdata.login_button);
     common.checkIfVisible(locatordata.username_required);
     common.checkIfVisible(locatordata.password_required);
   });
@@ -45,13 +45,13 @@ describe("Verify login page", { testIsolation: true }, () => {
     // Navigate to the specified url and validate page title
     login.navigateToURLandVeifyTitle(userdata.site, userdata.title);
     login.setUserName(userdata.incorrect_username);
-    common.clickButton(locatordata.login_button);
+    common.clickButton(userdata.login_button);
     common.checkIfVisible(locatordata.password_required);
     login.clearUserName();
     common.checkIfVisible(locatordata.username_required);
     login.setUserName(userdata.incorrect_username);
     login.setPassword(userdata.incorrect_password);
-    common.clickButton(locatordata.login_button);
+    common.clickButton(userdata.login_button);
     common.checkIfVisible(locatordata.invalid_credentials);
   });
 
@@ -63,9 +63,9 @@ describe("Verify login page", { testIsolation: true }, () => {
     login.validateUserName(userdata.admin_username);
     login.fetchPasswordFromLoginPageandSetPassword();
     login.validatePassword(userdata.admin_password);
-    common.clickButton(locatordata.login_button);
+    common.clickButton(userdata.login_button);
     common.checkIfVisible(locatordata.dashboard_header);
-    common.clickOnElement(locatordata.profile_picture);
-    common.clickOnElement(locatordata.logout_option);
+    common.clickOnElement(userdata.profile_picture);
+    common.clickOnElement(userdata.logout_option);
   });
 });

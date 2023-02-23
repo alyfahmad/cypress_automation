@@ -1,12 +1,18 @@
 {
-    "site": "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login",
-    "employee_username": "tester",
-    "employee_password": "S@mple_password963",
-    "title": "OrangeHRM",
     "punch_in_time": "08:00 AM",
     "punch_in_description": "Test Punch In",
     "punch_out_time": "05:00 PM",
     "punch_out_description": "Test Punch Out",
-    "timesheet_common_duration": "08:00"
+    "timesheet_common_duration": "08:00",
+    "deparment": "Internal",
+
+    "time_indicator": "hh:mm" ,
+    "in_button": "in",
+    "out_button": "out",
+    "view_button": "view",
+    "edit_button": "edit",
+
+    "search_placeholder": "Type for hints..."
+
 }
   

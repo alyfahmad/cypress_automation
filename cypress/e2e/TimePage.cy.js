@@ -1,118 +1,106 @@
+import Login from "../PageObjects/LoginPage";
+import Common from "../PageObjects/Common";
+import Time from "../PageObjects/TimePage";
+import PIM from "../PageObjects/PIMPage";
+
 describe("Verify Time Page Functionality", () => {
+
   let userdata;
+  let locatordata;
+  let logindata;
+  let login;
+  let common;
+  let time;
+  let pim;
+
   before(() => {
     cy.fixture("TimePage").then((data) => {
       userdata = data;
+      
     });
+    cy.fixture("TimePageLocators").then((data) => {
+      locatordata = data;
+      
+    });
+    cy.fixture("LoginPage").then((data) => {
+      logindata = data;
+      
+    });
+
+    login = new Login();
+    common = new Common();
+    time = new Time();
+    pim = new PIM();
   });
+
   it("verify login with employee account", () => {
-    cy.visit(userdata.site);
-    cy.title().should("eq", userdata.title);
-    cy.xpath("//input[@placeholder='Username']").type(
-      userdata.employee_username
-    );
-    cy.xpath("//input[@placeholder='Username']").should(
-      "have.value",
-      userdata.employee_username
-    );
-    cy.xpath("//input[@placeholder='Password']").type(
-      userdata.employee_password
-    );
-    cy.xpath("//input[@placeholder='Password']").should(
-      "have.value",
-      userdata.employee_password
-    );
-    cy.xpath("//button[contains(normalize-space(.),'Login')]").click();
-    cy.title().should("eq", userdata.title);
+    login.navigateToURLandVeifyTitle(logindata.site, logindata.title);
+    login.setUserName(logindata.employee_username);
+    login.validateUserName(logindata.employee_username);
+    login.setPassword(logindata.employee_password);
+    login.validatePassword(logindata.employee_password);
+    common.clickButton(logindata.login_button);
   });
+
   it("Validate navigation to Time Page", () => {
-    cy.xpath(
-      "//h6[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'dashboard')]"
-    ).should("be.visible");
-    cy.xpath(
-      "//a/span[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'time')]"
-    ).click();
-    cy.xpath(
-      "//h6[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'time')]"
-    ).should("be.visible");
+    common.checkIfVisible(locatordata.dashboard_header);
+    common.clickOnElement(locatordata.time_option_in_sidebar);
+    common.checkIfVisible(locatordata.time_header)
+    common.waitUntilPageLoad(2);
   });
+
   it("Switch to Attendence and Punch In", () => {
-    cy.xpath(
-      "//span[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'attendance')]"
-    ).click();
-    cy.xpath(
-      "//span[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'attendance')]/../ul//a[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'punch in')]"
-    ).click();
-    cy.xpath("//input[@placeholder='hh:mm']").clear();
-    cy.xpath("//input[@placeholder='hh:mm']").type(userdata.punch_in_time);
-    cy.xpath(
-      "//label[contains(normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')),'note')]/../..//textarea"
-    ).type(userdata.punch_in_description);
-    cy.wait(3000);
-    cy.xpath(
-      "//button[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='in']"
-    ).click();
-    cy.wait(5000);
+    common.clickOnElement(locatordata.attendance_option);
+    common.clickOnElement(locatordata.punch_in_option);
+    common.clearTextBasedOnPlaceholder(userdata.time_indicator);
+    common.inputTextBasedOnPlaceholder(userdata.time_indicator, userdata.punch_in_time);
+    pim.inputFieldBasedOnLocator(userdata.description_section, userdata.punch_in_description);
+    common.waitUntilPageLoad(3);
+    common.clickButton(userdata.in_button);
+    // cy.xpath(
+    //   "//button[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='in']"
+    // ).click();
+    common.waitUntilPageLoad(5);
   });
+
   it("Validate Punch In Information and Punch Out", () => {
-    cy.xpath(
-      "//label[contains(normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')),'punched in time')]/../..//p"
-    ).should("be.visible");
-    cy.xpath(
-      "//label[contains(normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')),'punched in note')]/../..//p"
-    ).should("be.visible");
-    cy.xpath("//input[@placeholder='hh:mm']").clear();
-    cy.xpath("//input[@placeholder='hh:mm']").type(userdata.punch_out_time);
-    cy.xpath(
-      "//label[contains(normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')),'note')]/../..//textarea"
-    ).type(userdata.punch_out_description);
-    cy.wait(3000);
-    cy.xpath(
-      "//button[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='out']"
-    ).click();
-    cy.wait(5000);
+    common.checkIfVisible(locatordata.punched_in_time_validation);
+    common.checkIfVisible(locatordata.punched_in_desc_validation);
+    common.clearTextBasedOnPlaceholder(userdata.time_indicator);
+    common.inputTextBasedOnPlaceholder(userdata.time_indicator, userdata.punch_out_time);
+    pim.inputFieldBasedOnLocator(userdata.description_section, userdata.punch_out_description);
+    common.waitUntilPageLoad(3);
+    common.clickButton(userdata.out_button);
+    common.waitUntilPageLoad(5);
   });
+
   it("Switch to My Records & Validate information", () => {
-    cy.xpath(
-      "//span[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'attendance')]/i"
-    ).click();
-    cy.xpath(
-      "//span[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'attendance')]/../ul//a[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'my records')]"
-    ).click();
-    cy.xpath(
-      "//button[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='view']"
-    ).click();
-    cy.wait(5000);
-    cy.xpath(
-      "//p[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), '08:00')]"
-    ).should("be.visible");
-    cy.xpath(
-      "//div[contains(normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'test punch in')]"
-    ).should("be.visible");
-    cy.xpath(
-      "//p[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), '17:00')]"
-    ).should("be.visible");
-    cy.xpath(
-      "//div[contains(normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'test punch out')]"
-    ).should("be.visible");
-    cy.xpath(
-      "//div[contains(normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), '9.00')]"
-    ).should("be.visible");
+    common.clickOnElement(locatordata.attendance_option);
+    common.clickOnElement(locatordata.my_records_option);
+    common.clickButton(userdata.view_button);
+    common.waitUntilPageLoad(5);
+    common.checkIfVisible(locatordata.my_records_punch_in_time_validator);
+    common.checkIfVisible(locatordata.my_records_punch_in_desc_validator);
+    common.checkIfVisible(locatordata.my_records_punch_out_time_validator);
+    common.checkIfVisible(locatordata.my_records_punch_out_desc_validator);
+    common.checkIfVisible(locatordata.my_records_duration_validator);
   });
+
   it("Switch to My Time sheet & Edit", () => {
-    cy.xpath(
-      "//span[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'timesheets')]"
-    ).click();
-    cy.xpath(
-      "//span[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'timesheets')]/../ul//a[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'my timesheets')]"
-    ).click();
-    cy.xpath(
-      "//button[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='edit']"
-    ).click();
-    cy.wait(5000);
-    cy.xpath("//input[@placeholder='Type for hints...']").clear();
-    cy.xpath("//input[@placeholder='Type for hints...']").type("Internal");
-    cy.wait(5000);
+    common.clickOnElement(locatordata.timesheets_option);
+    common.clickOnElement(locatordata.my_timesheets_option);
+    common.clickButton(userdata.edit_button);
+    common.waitUntilPageLoad(5);
+    common.clearTextBasedOnPlaceholder(userdata.search_placeholder);
+    common.inputTextBasedOnPlaceholder(userdata.search_placeholder, userdata.deparment);
+    common.waitUntilPageLoad(5);
+
+
+
+
+
+    
+    
     cy.xpath(
       "//span[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'internal - recruitment')]"
     ).click();
@@ -141,19 +129,16 @@ describe("Verify Time Page Functionality", () => {
       userdata.timesheet_common_duration
     );
     // cy.xpath("(//input[@class='oxd-input oxd-input--active'])[8]").type("08:00");
-    cy.wait(2000);
+    common.waitUntilPageLoad(2);
     cy.xpath(
       "//button[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='save']"
     ).click();
-    cy.wait(5000);
+    common.waitUntilPageLoad(5);
   });
+
   it("Validate logout", () => {
-    cy.xpath(
-      "//div[@class='oxd-topbar-header-userarea']//img[contains(@alt, 'profile picture')]"
-    ).click();
-    cy.xpath(
-      "//a[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'logout')]"
-    ).click();
-    cy.xpath("//div[@class='orangehrm-login-branding']").should("be.visible");
+    common.clickOnElement(logindata.profile_picture);
+    common.clickOnElement(logindata.logout_option);
   });
+
 });

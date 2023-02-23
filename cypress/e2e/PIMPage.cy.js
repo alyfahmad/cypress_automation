@@ -7,6 +7,7 @@ describe("verify create new employee and login info", () => {
   let userdata;
   let employeedata;
   let locatordata;
+  let logindata;
   let login;
   let common;
   let pim;
@@ -21,6 +22,9 @@ describe("verify create new employee and login info", () => {
     cy.fixture("PIMPageLocators").then((data) => {
       locatordata = data;
     });
+    cy.fixture("LoginPage").then((data) => {
+      logindata = data;
+    });
     login = new Login();
     common = new Common();
     pim = new PIM();
@@ -28,12 +32,12 @@ describe("verify create new employee and login info", () => {
 
 
   it("verify login to admin account", () => {
-    login.navigateToURLandVeifyTitle(userdata.site, userdata.title);
-    login.setUserName(userdata.admin_username);
-    login.validateUserName(userdata.admin_username);
-    login.setPassword(userdata.admin_password);
-    login.validatePassword(userdata.admin_password);
-    common.clickButton(userdata.login_button);
+    login.navigateToURLandVeifyTitle(logindata.site, logindata.title);
+    login.setUserName(logindata.admin_username);
+    login.validateUserName(logindata.admin_username);
+    login.setPassword(logindata.admin_password);
+    login.validatePassword(logindata.admin_password);
+    common.clickButton(logindata.login_button);
   });
 
   it("Navigate to PIM", () => {
@@ -142,8 +146,8 @@ describe("verify create new employee and login info", () => {
 
 
   it("Validate logout", () => {
-    common.clickOnElement(locatordata.profile_picture);
-    common.clickOnElement(locatordata.logout_option);
+    common.clickOnElement(logindata.profile_picture);
+    common.clickOnElement(logindata.logout_option);
   });
   
 });

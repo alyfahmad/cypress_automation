@@ -21,6 +21,10 @@ class Common{
             expected_data);
     }
 
+    clearTextBasedOnPlaceholder(placeholder) {
+        cy.xpath("//input[@placeholder='"+placeholder+"']").clear(); 
+    }
+
     waitUntilPageLoad(duration) {
         let duration_in_ms = duration*1000;
         cy.wait(duration_in_ms);
