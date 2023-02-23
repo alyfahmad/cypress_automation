@@ -3,6 +3,10 @@ class Common{
         cy.xpath("//button[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), '"+button_text+"')]").click();
     }
 
+    clickButtonForcefully(button_text) {
+        cy.xpath("//button[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), '"+button_text+"')]").click({ force: true });
+    }
+
     checkIfVisible(locator) {
         cy.xpath(locator).should("be.visible");  
     }

@@ -44,7 +44,7 @@ describe("verify create new employee and login info", () => {
   });
 
   it("Validate new employee creation page content and conditions", () => {
-    common.clickButton(userdata.add_button);
+    common.clickButtonForcefully(userdata.add_button);
     common.checkIfVisible(locatordata.add_employee_header);
     common.clickButton(userdata.save_button);
     common.checkIfVisible(locatordata.first_name_required);
@@ -63,23 +63,24 @@ describe("verify create new employee and login info", () => {
     common.inputTextBasedOnPlaceholder(userdata.last_name_placeholder, employeedata.employee_last_name);
     pim.fileSelector(employeedata.employee_profile_pic_path);
     pim.inputFieldBasedOnLabel(userdata.username_field_name, employeedata.employee_username);
-    pim.inputFieldBasedOnLabel(userdata.password_field_name, employeedata.employee_incorrect_password_1);
-    pim.inputFieldBasedOnLabel(userdata.confirmed_password_field_name, employeedata.employee_incorrect_password_1);
+    pim.inputFieldBasedOnLabelExactMatch(userdata.password_field_name, employeedata.employee_incorrect_password_1);
+    pim.inputFieldBasedOnLabelExactMatch(userdata.confirmed_password_field_name, employeedata.employee_incorrect_password_1);
     common.clickButton(userdata.save_button);
     common.checkIfVisible(locatordata.password_minimum_character_validation);
-    pim.clearFieldBasedOnLabel(userdata.password_field_name);
-    pim.clearFieldBasedOnLabel(userdata.confirmed_password_field_name);
-    pim.inputFieldBasedOnLabel(userdata.password_field_name, employeedata.employee_incorrect_password_2);
-    pim.inputFieldBasedOnLabel(userdata.confirmed_password_field_name, employeedata.employee_incorrect_password_2);
+    pim.clearFieldBasedOnLabelExactMatch(userdata.password_field_name);
+    pim.clearFieldBasedOnLabelExactMatch(userdata.confirmed_password_field_name);
+    pim.inputFieldBasedOnLabelExactMatch(userdata.password_field_name, employeedata.employee_incorrect_password_2);
+    pim.inputFieldBasedOnLabelExactMatch(userdata.confirmed_password_field_name, employeedata.employee_incorrect_password_2);
     common.checkIfVisible(locatordata.password_combination_validation);
-    pim.clearFieldBasedOnLabel(userdata.password_field_name);
-    pim.clearFieldBasedOnLabel(userdata.confirmed_password_field_name);
-    pim.inputFieldBasedOnLabel(userdata.password_field_name, employeedata.employee_password);
-    pim.inputFieldBasedOnLabel(userdata.confirmed_password_field_name, employeedata.employee_incorrect_password_3);
+    pim.clearFieldBasedOnLabelExactMatch(userdata.password_field_name);
+    pim.clearFieldBasedOnLabelExactMatch(userdata.confirmed_password_field_name);
+    pim.inputFieldBasedOnLabelExactMatch(userdata.password_field_name, employeedata.employee_password);
+    pim.inputFieldBasedOnLabelExactMatch(userdata.confirmed_password_field_name, employeedata.employee_incorrect_password_3);
     common.checkIfVisible(locatordata.password_mismatch_validation);
-    pim.clearFieldBasedOnLabel(userdata.confirmed_password_field_name);
-    pim.inputFieldBasedOnLabel(userdata.confirmed_password_field_name, employeedata.employee_password);
+    pim.clearFieldBasedOnLabelExactMatch(userdata.confirmed_password_field_name);
+    pim.inputFieldBasedOnLabelExactMatch(userdata.confirmed_password_field_name, employeedata.employee_password);
     common.clickButton(userdata.save_button);
+    common.waitUntilPageLoad(3);
     common.validateTextBasedOnPlaceholder(userdata.first_name_placeholder,employeedata.employee_first_name);
     common.validateTextBasedOnPlaceholder(userdata.middle_name_placeholder,employeedata.employee_middle_name);
     common.validateTextBasedOnPlaceholder(userdata.last_name_placeholder,employeedata.employee_last_name);
