@@ -8,6 +8,7 @@ describe("Verify Time Page Functionality", () => {
   let userdata;
   let locatordata;
   let logindata;
+  let pimdata;
   let login;
   let common;
   let time;
@@ -26,6 +27,10 @@ describe("Verify Time Page Functionality", () => {
       logindata = data;
       
     });
+    cy.fixture("PIMPageLocators").then((data) => {
+      pimdata = data;
+      
+    });
 
     login = new Login();
     common = new Common();
@@ -40,10 +45,11 @@ describe("Verify Time Page Functionality", () => {
     login.setPassword(logindata.employee_password);
     login.validatePassword(logindata.employee_password);
     common.clickButton(logindata.login_button);
+    common.waitUntilPageLoad(3);
   });
 
   it("Validate navigation to Time Page", () => {
-    common.checkIfVisible(locatordata.dashboard_header);
+    common.checkIfVisible(pimdata.dashboard_header);
     common.clickOnElement(locatordata.time_option_in_sidebar);
     common.checkIfVisible(locatordata.time_header)
     common.waitUntilPageLoad(2);
@@ -54,7 +60,7 @@ describe("Verify Time Page Functionality", () => {
     common.clickOnElement(locatordata.punch_in_option);
     common.clearTextBasedOnPlaceholder(userdata.time_indicator);
     common.inputTextBasedOnPlaceholder(userdata.time_indicator, userdata.punch_in_time);
-    pim.inputFieldBasedOnLocator(userdata.description_section, userdata.punch_in_description);
+    pim.inputFieldBasedOnLocator(locatordata.description_section, userdata.punch_in_description);
     common.waitUntilPageLoad(3);
     common.clickButton(userdata.in_button);
     // cy.xpath(
@@ -68,14 +74,14 @@ describe("Verify Time Page Functionality", () => {
     common.checkIfVisible(locatordata.punched_in_desc_validation);
     common.clearTextBasedOnPlaceholder(userdata.time_indicator);
     common.inputTextBasedOnPlaceholder(userdata.time_indicator, userdata.punch_out_time);
-    pim.inputFieldBasedOnLocator(userdata.description_section, userdata.punch_out_description);
+    pim.inputFieldBasedOnLocator(locatordata.description_section, userdata.punch_out_description);
     common.waitUntilPageLoad(3);
     common.clickButton(userdata.out_button);
     common.waitUntilPageLoad(5);
   });
 
   it("Switch to My Records & Validate information", () => {
-    common.clickOnElement(locatordata.attendance_option);
+    common.clickOnElement(locatordata.attendence_option_2);
     common.clickOnElement(locatordata.my_records_option);
     common.clickButton(userdata.view_button);
     common.waitUntilPageLoad(5);

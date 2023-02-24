@@ -7,7 +7,7 @@
     "title": "OrangeHRM",
 
     "login_button": "login",
-    "profile_picture": "//img[contains(@alt, 'profile picture')]",
+    "profile_picture": "//div[@class='oxd-topbar-header-userarea']//img[contains(@alt, 'profile picture')]",
     "logout_option": "//a[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'logout')]",
 
     "employee_username": "tester",

@@ -28,8 +28,6 @@
     "blood_type_selection_element": "//label[contains(normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')),'blood type')]/parent::div/parent::div//i",
     "blood_type_option_element": "//label[contains(normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')),'blood type')]/parent::div/parent::div//span[contains(normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')),'o-')]",
     "attachment_description_element": "//label[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='comment']/../..//textarea",
-    "profile_picture": "//div[@class='oxd-topbar-header-userarea']//img[contains(@alt, 'profile picture')]",
-    "logout_option": "//a[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'logout')]",
 
     "save_button_1": "(//button[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='save'])[1]",
     "save_button_2": "(//button[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='save'])[2]",
