@@ -31,5 +31,8 @@
 
     "save_button_1": "(//button[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='save'])[1]",
     "save_button_2": "(//button[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='save'])[2]",
-    "save_button_3": "(//button[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='save'])[3]"
+    "save_button_3": "(//button[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='save'])[3]",
+
+    "delete_button": "//i[@class='oxd-icon bi-trash']",
+    "delete_confirmation_button": "//i[@class='oxd-icon bi-trash oxd-button-icon']"
 }
