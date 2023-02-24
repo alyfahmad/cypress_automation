@@ -31,7 +31,7 @@ describe("verify create new employee and login info", () => {
   });
 
 
-  it("verify login to admin account", () => {
+  it("Validate login to admin account", () => {
     login.navigateToURLandVeifyTitle(logindata.site, logindata.title);
     login.setUserName(logindata.admin_username);
     login.validateUserName(logindata.admin_username);
@@ -40,14 +40,14 @@ describe("verify create new employee and login info", () => {
     common.clickButton(logindata.login_button);
   });
 
-  it("Navigate to PIM", () => {
+  it("Validate navigation to PIM", () => {
     common.checkIfVisible(locatordata.dashboard_header);
     common.clickOnElement(locatordata.pim_option_in_sidebar);
     common.checkIfVisible(locatordata.pim_header)
     common.waitUntilPageLoad(2);
   });
 
-  it("Validate new employee creation page content and conditions", () => {
+  it("Validate new employee creation page content and requirements", () => {
     common.clickButtonForcefully(userdata.add_button);
     common.checkIfVisible(locatordata.add_employee_header);
     common.clickButton(userdata.save_button);
@@ -61,7 +61,7 @@ describe("verify create new employee and login info", () => {
   });
 
   // Add employee information
-  it("Validate & Add new employee basic information and credentials", () => {
+  it("Validate new employee creation with basic information and credentials", () => {
     common.inputTextBasedOnPlaceholder(userdata.first_name_placeholder, employeedata.employee_first_name);
     common.inputTextBasedOnPlaceholder(userdata.middle_name_placeholder, employeedata.employee_middle_name);
     common.inputTextBasedOnPlaceholder(userdata.last_name_placeholder, employeedata.employee_last_name);
@@ -91,12 +91,8 @@ describe("verify create new employee and login info", () => {
   });
 
   //Add additional information
-  it("Validate & Add Pesonal Details", () => {
+  it("Validate adding pesonal details", () => {
     common.checkIfVisible(locatordata.personal_information_header);
-    // cy.xpath(
-    //   "//h6[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='personal details']",
-    //   { timeout: 10000 }
-    // ).should("be.visible");
     pim.inputFieldBasedOnLabel(userdata.nickname_field_name, employeedata.employee_nick_name);
     pim.clearFieldBasedOnLabel(userdata.employee_id_field_name);
     pim.inputFieldBasedOnLabel(userdata.employee_id_field_name, employeedata.employee_id);
@@ -116,7 +112,7 @@ describe("verify create new employee and login info", () => {
   });
 
   // add ssn & sin
-  it("Add SSN & SIN", () => {
+  it("Validate adding SSN & SIN", () => {
     common.waitUntilPageLoad(5);
     pim.inputFieldBasedOnLabel(userdata.ssn_field_name, employeedata.employee_common_number);
     pim.inputFieldBasedOnLabel(userdata.sin_field_name, employeedata.employee_common_number);
@@ -125,7 +121,7 @@ describe("verify create new employee and login info", () => {
 
 
   // add blood type
-  it("Add Blood Type", () => {
+  it("Validate adding Blood Type", () => {
     common.waitUntilPageLoad(5);
     common.clickOnElement(locatordata.blood_type_selection_element);
     common.clickOnElement(locatordata.blood_type_option_element)
@@ -134,7 +130,7 @@ describe("verify create new employee and login info", () => {
 
 
   // add attachment
-  it("Add Attachment", () => {
+  it("Validate adding Attachment", () => {
     common.waitUntilPageLoad(5);
     common.clickButton(userdata.add_button);
     common.waitUntilPageLoad(2);
