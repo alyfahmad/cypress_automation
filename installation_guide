@@ -1,3 +1,5 @@
+Cypress Practice Project by Alif Ahmad
+
 1. Download and Install nodeJS from https://nodejs.org/en/download/
 2. Go to This PC → Properties → Advanced System Settings → Environment Variables → System Variables → Path
 3. Click edit and check if nodeJS is available for the path variable

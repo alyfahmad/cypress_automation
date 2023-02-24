@@ -10,6 +10,7 @@ module.exports = defineConfig({
         'cypress/e2e/TimeModule.cy.js',
         'cypress/e2e/DataCleanup.cy.js'
       ]
+      return config;
     },
     testIsolation: false,
     viewportWidth: 1920,
