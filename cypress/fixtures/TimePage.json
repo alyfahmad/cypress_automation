@@ -11,6 +11,7 @@
     "out_button": "out",
     "view_button": "view",
     "edit_button": "edit",
+    "save_button": "save",
 
     "search_placeholder": "Type for hints..."
 

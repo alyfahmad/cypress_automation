@@ -2,7 +2,7 @@
     "employee_first_name": "tester f_name",
     "employee_middle_name": "tester m_name",
     "employee_last_name": "tester l_name",
-    "employee_profile_pic_path": "./cypress/robot.jpg",
+    "employee_profile_pic_path": "./cypress/SupportingFiles/robot.jpg",
     "employee_username": "tester",
     "employee_password": "S@mple_password963",
     "employee_incorrect_password_1": "Sample",
@@ -14,7 +14,7 @@
     "employee_common_expiry_date": "2025-12-01",
     "employee_birth_date": "2001-12-01",
     "employee_na_text": "N/A",
-    "employee_attachment_path": "./cypress/test.jpg",
+    "employee_attachment_path": "./cypress/SupportingFiles/test.jpg",
     "employee_attachment_description": "Test Attachment"
 
   }

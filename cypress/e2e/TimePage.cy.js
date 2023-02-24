@@ -94,45 +94,17 @@ describe("Verify Time Page Functionality", () => {
     common.clearTextBasedOnPlaceholder(userdata.search_placeholder);
     common.inputTextBasedOnPlaceholder(userdata.search_placeholder, userdata.deparment);
     common.waitUntilPageLoad(5);
-
-
-
-
-
-    
-    
-    cy.xpath(
-      "//span[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'internal - recruitment')]"
-    ).click();
-    cy.xpath(
-      "//div[contains(normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')),'select')]/..//i"
-    ).click();
-    cy.xpath(
-      "//span[contains(normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')), 'job analysis')]"
-    ).click();
-    cy.xpath("(//input[@class='oxd-input oxd-input--active'])[2]").type(
-      userdata.timesheet_common_duration
-    );
-    cy.xpath("(//input[@class='oxd-input oxd-input--active'])[3]").type(
-      userdata.timesheet_common_duration
-    );
-    cy.xpath("(//input[@class='oxd-input oxd-input--active'])[4]").type(
-      userdata.timesheet_common_duration
-    );
-    cy.xpath("(//input[@class='oxd-input oxd-input--active'])[5]").type(
-      userdata.timesheet_common_duration
-    );
-    cy.xpath("(//input[@class='oxd-input oxd-input--active'])[6]").type(
-      userdata.timesheet_common_duration
-    );
-    cy.xpath("(//input[@class='oxd-input oxd-input--active'])[7]").type(
-      userdata.timesheet_common_duration
-    );
-    // cy.xpath("(//input[@class='oxd-input oxd-input--active'])[8]").type("08:00");
+    common.clickOnElement(locatordata.project_option);
+    common.clickOnElement(locatordata.select_activity);
+    common.clickOnElement(locatordata.activity_option);
+    time.addTimeToTimesheet(2,userdata.timesheet_common_duration);
+    time.addTimeToTimesheet(3,userdata.timesheet_common_duration);
+    time.addTimeToTimesheet(4,userdata.timesheet_common_duration);
+    time.addTimeToTimesheet(5,userdata.timesheet_common_duration);
+    time.addTimeToTimesheet(6,userdata.timesheet_common_duration);
+    time.addTimeToTimesheet(7,userdata.timesheet_common_duration);
     common.waitUntilPageLoad(2);
-    cy.xpath(
-      "//button[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='save']"
-    ).click();
+    common.clickButton(userdata.save_button);
     common.waitUntilPageLoad(5);
   });
 
