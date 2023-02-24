@@ -34,7 +34,7 @@ describe("Cleanup Data", () => {
     pim = new PIM();
   });
 
-  it("verify login to admin account", () => {
+  it("Vadlidate login to admin account", () => {
     login.navigateToURLandVeifyTitle(logindata.site, logindata.title);
     login.setUserName(logindata.admin_username);
     login.validateUserName(logindata.admin_username);
@@ -43,14 +43,14 @@ describe("Cleanup Data", () => {
     common.clickButton(logindata.login_button);
   });
 
-  it("Navigate to PIM", () => {
+  it("Validate navigation to PIM Page", () => {
     common.checkIfVisible(pimlocators.dashboard_header);
     common.clickOnElement(pimlocators.pim_option_in_sidebar);
     common.checkIfVisible(pimlocators.pim_header)
     common.waitUntilPageLoad(2);
   });
 
-  it("Search for Employee", () => {
+  it("Validate Search for Employee & delete", () => {
     pim.inputFieldBasedOnLabel(pimdata.employee_id_field_name, employeedata.employee_id);
     common.clickButtonForcefully(pimdata.search_button);
     common.waitUntilPageLoad(3);

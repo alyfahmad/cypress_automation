@@ -38,7 +38,7 @@ describe("Verify Time Page Functionality", () => {
     pim = new PIM();
   });
 
-  it("verify login with employee account", () => {
+  it("Validate login with employee account", () => {
     login.navigateToURLandVeifyTitle(logindata.site, logindata.title);
     login.setUserName(logindata.employee_username);
     login.validateUserName(logindata.employee_username);
@@ -55,7 +55,7 @@ describe("Verify Time Page Functionality", () => {
     common.waitUntilPageLoad(2);
   });
 
-  it("Switch to Attendence and Punch In", () => {
+  it("Validate navigation to Attendence and Punch In", () => {
     common.clickOnElement(locatordata.attendance_option);
     common.clickOnElement(locatordata.punch_in_option);
     common.clearTextBasedOnPlaceholder(userdata.time_indicator);
@@ -63,9 +63,6 @@ describe("Verify Time Page Functionality", () => {
     pim.inputFieldBasedOnLocator(locatordata.description_section, userdata.punch_in_description);
     common.waitUntilPageLoad(3);
     common.clickButton(userdata.in_button);
-    // cy.xpath(
-    //   "//button[normalize-space(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))='in']"
-    // ).click();
     common.waitUntilPageLoad(5);
   });
 
@@ -80,7 +77,7 @@ describe("Verify Time Page Functionality", () => {
     common.waitUntilPageLoad(5);
   });
 
-  it("Switch to My Records & Validate information", () => {
+  it("Validate navigation to My Records and available information", () => {
     common.clickOnElement(locatordata.attendence_option_2);
     common.clickOnElement(locatordata.my_records_option);
     common.clickButton(userdata.view_button);
@@ -92,7 +89,7 @@ describe("Verify Time Page Functionality", () => {
     common.checkIfVisible(locatordata.my_records_duration_validator);
   });
 
-  it("Switch to My Time sheet & Edit", () => {
+  it("Validate switching to My Time sheet & Edit information", () => {
     common.clickOnElement(locatordata.timesheets_option);
     common.clickOnElement(locatordata.my_timesheets_option);
     common.clickButton(userdata.edit_button);
